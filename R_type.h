@@ -7,9 +7,6 @@
 #include <typeinfo>
 #include <set>
 
-#include "LA.h"
-#include "variable_table.h"
-
 enum kind_of_type{ Nulltype, Numeric, Logical, Character};
 
 inline int max(int a, int b){ return a > b ? a : b; }

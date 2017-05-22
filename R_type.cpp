@@ -88,8 +88,3 @@ int Leq(R_type *a, R_type *b)
     return (a->ToNum())->Leq(b);
 }
 
-
-
-
-
-#endif
