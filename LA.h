@@ -42,6 +42,10 @@ public:
         :t(tn), offset(offsetn)
     { }
 
+    addr(const addr& o)
+        : t(o.t), offset(o.offset)
+    { }
+
     vtable get_table() {return t;};
 
     int get_offset() {return offset;}
@@ -77,9 +81,17 @@ public:
         t_lex = t;
     }
 
+    Lex (const Lex &o)
+        : v_lex(o.v_lex)
+    {
+        t_lex = o.t_lex;
+    }
+
+
     Lex& operator=(const Lex &q)
     {
         v_lex = q.v_lex;
+        t_lex = q.t_lex;
         return *this;
     }
 
