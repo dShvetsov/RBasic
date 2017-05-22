@@ -4,10 +4,10 @@
 #include <vector>
 #include <iostream>
 
-#include "LA.cpp"
-#include "R_type.cpp"
-#include "SA.cpp"
-#include "variable_table.cpp"
+#include "LA.h"
+#include "R_type.h"
+#include "SA.h"
+#include "variable_table.h"
 
 class Poliz
 {

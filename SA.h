@@ -1,10 +1,10 @@
 #ifndef SA__cpp
-#define SA_cpp
+#define SA__cpp
 
+#include <stack>
 
-
-#include "LA.hpp"
-#include "Poliz.hpp"
+#include "LA.h"
+#include "Poliz.h"
 
 class Parser
 {

@@ -1,9 +1,8 @@
-#ifndef SA__cpp
-#define SA__cpp
-
 #include "SA.h"
 
-void Parser::gvl(bool p = false)
+#include "LA.h"
+
+void Parser::gvl(bool p)
 {
     Lex tmp;
     tmp = scan.get_lex(p);
@@ -71,7 +70,7 @@ int Parser::in_count()
     return ans;
 }
 
-Lex Parser::gl(bool p = false){
+Lex Parser::gl(bool p){
     if (position == lexems_size){
         gvl(p);
     }
@@ -364,5 +363,3 @@ void Parser::ArgListElem()
         Expr();
     } */
 }
-
-#endif
