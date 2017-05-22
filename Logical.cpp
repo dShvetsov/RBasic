@@ -1,4 +1,4 @@
-
+#include "Logical.h"
 
 int Logical_t::Not()
 {

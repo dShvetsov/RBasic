@@ -1,3 +1,4 @@
+#include "Character.h"
 
 int Character_t::Eq(R_type *el)
 {

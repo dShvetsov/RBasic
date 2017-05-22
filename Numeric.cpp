@@ -1,3 +1,4 @@
+#include "Numeric.h"
 
 int Numeric_t::Plus(R_type *a)
 {
