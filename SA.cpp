@@ -1,121 +1,85 @@
 #ifndef SA__cpp
 #define SA__cpp
-/*
-#include <iostream>
-#include "LA.cpp"
-#include <stack>
-#include "Poliz.cpp"
-#include <vector>
 
-*/
-class Parser
+#include "SA.h"
+
+void Parser::gvl(bool p = false)
 {
-    Lex curr_lex;
-    std::stack<int> repeart_points;
-    std::vector<Lex> lexems;
-    int position;
-    int lexems_size;
-    type_of_lex c_type;
-    Scanner scan;
-    void gvl(bool p = false)
+    Lex tmp;
+    tmp = scan.get_lex(p);
+    lexems.push_back(tmp);
+    lexems_size++;
+    while (tmp.get_type() != LEX_SEMIEND && tmp.get_type() != LEX_END)
     {
-        Lex tmp;
         tmp = scan.get_lex(p);
         lexems.push_back(tmp);
         lexems_size++;
-        while (tmp.get_type() != LEX_SEMIEND && tmp.get_type() != LEX_END)
-        {
-            tmp = scan.get_lex(p);
-            lexems.push_back(tmp);
-            lexems_size++;
-        }
     }
+}
 
-    int in_count()
+int Parser::in_count()
+{
+    int tmp = position - 1; // Тут может быть без -1
+    int sq = 0, ans = 0;
+    type_of_lex l;
+    l = lexems[tmp].get_type();
+    while ( l != LEX_END && l != LEX_SEMIEND && l != LEX_FIGOP  && l != LEX_SQBRCL && l != LEX_BRCL)
     {
-        int tmp = position - 1; // Тут может быть без -1
-        int sq = 0, ans = 0;
-        type_of_lex l;
-        l = lexems[tmp].get_type();
-        while ( l != LEX_END && l != LEX_SEMIEND && l != LEX_FIGOP  && l != LEX_SQBRCL && l != LEX_BRCL)
+        if (l == LEX_IN) ans++;
+        if (l == LEX_SQBROP)
         {
-            if (l == LEX_IN) ans++;
-            if (l == LEX_SQBROP)
+            sq++;
+            while (sq != 0)
             {
-                sq++;
-                while (sq != 0)
-                {
-                    if (tmp == lexems_size)
-                        gvl(true);
-                    tmp++;
-                    l = lexems[tmp].get_type();
-                    if (l == LEX_SQBROP) sq++;
-                    if (l == LEX_SQBRCL) sq--;
-                }
-            }else
-            if (l == LEX_BROP)
-            {
-                sq++;
-                while( sq != 0)
-                {
-                    if ( tmp == lexems_size )
-                        gvl(true);
-                    tmp++;
-                    l = lexems[tmp].get_type();
-                    if (l == LEX_BROP) sq++;
-                    if (l == LEX_BRCL) sq--;
-                }
-            }else
-            if (l == LEX_FIGOP)
-            {
-                sq++;
-                while ( sq!= 0 )
-                {
-                    if ( tmp == lexems_size )
-                        gvl(true);
-                    tmp++;
-                    l = lexems[tmp].get_type();
-                    if ( l == LEX_FIGOP ) sq++;
-                    if (l == LEX_FIGCL) sq--;
-                }
-
+                if (tmp == lexems_size)
+                    gvl(true);
+                tmp++;
+                l = lexems[tmp].get_type();
+                if (l == LEX_SQBROP) sq++;
+                if (l == LEX_SQBRCL) sq--;
             }
-            l = lexems[++tmp].get_type();
-        }
-        return ans;
-    }
+        }else
+        if (l == LEX_BROP)
+        {
+            sq++;
+            while( sq != 0)
+            {
+                if ( tmp == lexems_size )
+                    gvl(true);
+                tmp++;
+                l = lexems[tmp].get_type();
+                if (l == LEX_BROP) sq++;
+                if (l == LEX_BRCL) sq--;
+            }
+        }else
+        if (l == LEX_FIGOP)
+        {
+            sq++;
+            while ( sq!= 0 )
+            {
+                if ( tmp == lexems_size )
+                    gvl(true);
+                tmp++;
+                l = lexems[tmp].get_type();
+                if ( l == LEX_FIGOP ) sq++;
+                if (l == LEX_FIGCL) sq--;
+            }
 
-    void vl_clear() { lexems.clear(); lexems_size =  position = 0; }
-    Lex gl(bool p =false){
-        if (position == lexems_size){
-            gvl(p);
         }
-        curr_lex = lexems[position++];
-        c_type = curr_lex.get_type();
-        return curr_lex;
+        l = lexems[++tmp].get_type();
     }
-    void Expr();
-    void Start();
-    void Exph();
-    void Expp();
-    void Exp1();
-    void Exp2();
-    void Exp3();
-    void Exp4();
-    void Exp5();
-    void Exp6();
-    void Exp7();
-    void ArgList();
-    void ArgListElem();
-    void Variable();
-    void Program();
-    void S1();
-    void get_valid_lex();
-public:
-    Poliz prog;
-    Parser(const char *program = NULL):scan(program){lexems_size = position = 0;}
-    void analyze();
-};
+    return ans;
+}
+
+Lex Parser::gl(bool p = false){
+    if (position == lexems_size){
+        gvl(p);
+    }
+    curr_lex = lexems[position++];
+    c_type = curr_lex.get_type();
+    return curr_lex;
+}
+
 
 void Parser::get_valid_lex()
 {
