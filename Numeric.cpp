@@ -1,5 +1,9 @@
 #include "Numeric.h"
 
+#include "variable_table.h"
+
+#define EPS 0.0000000001
+
 int Numeric_t::Plus(R_type *a)
 {
     Numeric_t *two = dynamic_cast<Numeric_t *> (a->ToNum());
