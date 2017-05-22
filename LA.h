@@ -145,47 +145,4 @@ public:
     }
 };
 
-const std::string Scanner::TW[] =
-{
-    "",
-    "TRUE", "FALSE",
-    "NULL", "repeart", "if", "break",
-    "c", "length", "mode", "matrix"
-    ,""
-};
-
-const std::string Scanner::TD[] =
-{
-    "",
-    "<-",
-    "&", "|", "!",
-    ">", "<", ">=", "<=", "==", "!=",
-    "+", "-", "*", "/",
-    ":",
-    "(", ")", "[", "]",
-    ";", "\n", "," , "=", "{", "}", ""
-};
-
-const type_of_lex Scanner::words[] =
-{
-    LEX_NULL,
-    LEX_CONST, LEX_CONST,
-    LEX_CONST, LEX_REPEART, LEX_IF, LEX_BREAK,
-    LEX_C, LEX_LEN, LEX_MODE, LEX_MATRIX,
-    LEX_NULL
-};
-
-const type_of_lex Scanner::dlms[] =
-{
-    LEX_NULL,
-    LEX_IN,
-    LEX_AND, LEX_OR, LEX_NOT,
-    LEX_BIGGER, LEX_LES, LEX_BEQ, LEX_LEQ, LEX_EQ, LEX_NEQ,
-    LEX_PLUS, LEX_MINUS, LEX_MUL, LEX_DIV,
-    LEX_INTERVAL,
-    LEX_BROP, LEX_BRCL, LEX_SQBROP, LEX_SQBRCL, LEX_END, LEX_SEMIEND,
-    LEX_COMMA, LEX_IS, LEX_FIGOP, LEX_FIGCL,
-    LEX_NULL
-};
-
 #endif
