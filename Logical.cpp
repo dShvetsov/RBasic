@@ -1,5 +1,7 @@
 #include "Logical.h"
 
+#include "variable_table.h"
+
 int Logical_t::Not()
 {
     int ind = TTV.put(Numeric);

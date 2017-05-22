@@ -1,6 +1,10 @@
 #ifndef Logical__h
 #define Logical__h
 
+#include <vector>
+
+#include "R_type.h"
+
 class Logical_t:public R_type{
     std::vector <bool *> v;
     void clear()
