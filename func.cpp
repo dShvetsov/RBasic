@@ -1,5 +1,8 @@
-#ifndef func__cpp
-#define func__cpp
+#include "func.h"
+
+#include <string>
+
+#include "variable_table.h"
 
 int conc(std::list<R_type *> a)
 {
@@ -95,4 +98,3 @@ int lenght(std::list<R_type *> a)
     }
     return ind;
 }
-#endif
