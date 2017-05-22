@@ -1,5 +1,7 @@
 #include "Character.h"
 
+#include "variable_table.h"
+
 int Character_t::Eq(R_type *el)
 {
     Character_t *a = dynamic_cast<Character_t *>(el->ToChar());
