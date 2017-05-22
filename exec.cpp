@@ -1,16 +1,30 @@
-#ifndef exec__cpp
-#define exec__cpp
-/*
+#include "exec.h"
+
 #include <stack>
 #include <iostream>
-*/
 
-class Executer
+#include "R_type.h"
+#include "Numeric.h"
+#include "Logical.h"
+#include "Character.h"
+#include "func.h"
+#include "LA.h"
+#include "Poliz.h"
+
+R_type* change_type(R_type *a, kind_of_type t)
 {
-    Lex pc_el;
-public:
-    void execute(Poliz &prog);
-};
+    delete a;
+    R_type *ans;
+    switch(t)
+    {
+    case Nulltype: ans = new R_type; break;
+    case Numeric: ans = new Numeric_t; break;
+    case Logical: ans = new Logical_t; break;
+    case Character: ans = new Character_t; break;
+    }
+    return ans;
+}
+
 
 void Executer::execute (Poliz &prog)
 {
@@ -320,5 +334,3 @@ void Executer::execute (Poliz &prog)
         std::cout  << std::endl;
     } */
 }
-
-#endif

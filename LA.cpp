@@ -1,6 +1,5 @@
-#ifndef LA__cpp
-#define LA__cpp
-/*
+#include "LA.h"
+
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
@@ -8,229 +7,83 @@
 #include <string>
 #include <vector>
 #include <iterator>
-#include "variable_table.cpp"
-#include "R_type.cpp"
-*/
-enum vtable{MAIN_TABLE, TEMP_TABLE, OTHER};
 
-enum type_of_lex
+#include "variable_table.h"
+#include "R_type.h"
+
+std::ostream& operator << ( std::ostream &s, Lex l )
 {
-    LEX_NULL,
-    LEX_IN,
-    LEX_AND, LEX_OR, LEX_NOT, LEX_BIGGER, LEX_LES, LEX_BEQ, LEX_LEQ, LEX_EQ, LEX_NEQ,
-    LEX_PLUS, LEX_MINUS, LEX_MUL, LEX_DIV,
-    LEX_INTERVAL,
-    LEX_BROP, LEX_BRCL, LEX_SQBROP, LEX_SQBRCL,
-    LEX_ID, LEX_END, LEX_SEMIEND,
-    LEX_CONST,
-    LEX_COMMA,
-    LEX_LEN, LEX_C, LEX_MODE, LEX_MATRIX,
-    LEX_UNMIN, LEX_UNPL,
-    LEX_FIGOP, LEX_FIGCL,
-    LEX_IS, LEX_REPEART, LEX_IF, LEX_BREAK,
-    POLIZ_LABEL, POLIZ_GO, POLIZ_FGO
-};
+    switch(l.t_lex)
+    {
+    case LEX_NULL: s << "NULL "; break;
+    case LEX_IN: s << "<- " ; break;
+    case  LEX_AND : s << "& " ; break;
+    case  LEX_OR : s <<"| "; break;
+    case  LEX_NOT : s <<"!"; break;
+    case LEX_BIGGER : s <<" > "; break;
+    case LEX_LES : s <<"< "; break;
+    case LEX_BEQ : s <<"<= "; break;
+    case LEX_LEQ : s <<">= "; break;
+    case LEX_EQ : s <<"== "; break;
+    case LEX_NEQ : s <<"!= "; break;
+    case LEX_PLUS : s <<"+ "; break;
+    case LEX_MINUS : s <<"- "; break;
+    case LEX_MUL : s <<"* "; break;
+    case LEX_DIV : s <<"/ "; break;
+    case LEX_INTERVAL : s <<": "; break;
+    case LEX_BROP : s <<"( "; break;
+    case LEX_BRCL : s <<") "; break;
+    case LEX_SQBROP : s <<"[ "; break;
+    case LEX_SQBRCL : s <<"] "; break;
+    case LEX_ID : s <<"ID "; break;
+    case LEX_END : s <<"; "; break;
+    case LEX_SEMIEND : s <<"slash n "; break;
+    case LEX_FIGOP : s << "{ "; break;
+    case LEX_FIGCL : s << "} "; break;
+    case POLIZ_LABEL : s << l.v_lex.get_offset() << " "; break;
+    case POLIZ_FGO : s << "!F "; break;
+    case POLIZ_GO : s << "! "; break;
+    case LEX_CONST : s << "C "; break;
+    case LEX_UNMIN : s << "~ "; break;
+    case LEX_UNPL : s << "@ "; break;
+    case LEX_MODE : s << "mode "; break;
+    default : s << " WOOOOW " ; break;
+    }
+return s;
+}
 
 
-class addr
+int Scanner::look(const std::string &buf,const std::string *list)
 {
-    vtable t;
-    int offset;
-public:
-    addr(int offsetn, vtable tn):t(tn), offset(offsetn){}
-    vtable get_table(){return t;};
-    int get_offset(){return offset;}
-    addr & operator = (const addr &v)
+    int i = 1;
+    while ( !(list[i].empty()) )
     {
-        t = v.t;
-        offset = v.offset;
-        return *this;
+        if ( !buf.compare(list[i]) )
+            return i;
+        ++i;
     }
-};
+    return 0;
+}
 
-class Lex
+void Scanner::gc(bool p)
 {
-    type_of_lex t_lex;
-    addr v_lex;
-public:
-    Lex ( type_of_lex t, int v, vtable tab ):v_lex(v, tab)
+    if (position == current_string.end())
     {
-        t_lex = t;
+        if (!p)
+            std::cout << "> ";
+        else
+            std::cout << "+ ";
+        if (std::getline(std::cin, current_string));
+        if (std::cin.eof()) exit(0);
+        current_string += '\n';
+        position = current_string.begin();
     }
-    Lex( type_of_lex t = LEX_NULL):v_lex(0, OTHER)
-    {
-        t_lex = t;
-    }
-    Lex ( type_of_lex t, int v): v_lex(v, OTHER)
-    {
-        t_lex = t;
-    }
-    Lex& operator =(const Lex &q)
-    {
-        t_lex = q.t_lex;
-        v_lex = q.v_lex;
-        return *this;
-    }
-    type_of_lex get_type () { return t_lex; }
-    addr get_value () { return v_lex; }
-
-      friend std::ostream& operator << ( std::ostream &s, Lex l )
-    {
-        switch(l.t_lex)
-        {
-        case LEX_NULL: s << "NULL "; break;
-        case LEX_IN: s << "<- " ; break;
-        case  LEX_AND : s << "& " ; break;
-        case  LEX_OR : s <<"| "; break;
-        case  LEX_NOT : s <<"!"; break;
-        case LEX_BIGGER : s <<" > "; break;
-        case LEX_LES : s <<"< "; break;
-        case LEX_BEQ : s <<"<= "; break;
-        case LEX_LEQ : s <<">= "; break;
-        case LEX_EQ : s <<"== "; break;
-        case LEX_NEQ : s <<"!= "; break;
-        case LEX_PLUS : s <<"+ "; break;
-        case LEX_MINUS : s <<"- "; break;
-        case LEX_MUL : s <<"* "; break;
-        case LEX_DIV : s <<"/ "; break;
-        case LEX_INTERVAL : s <<": "; break;
-        case LEX_BROP : s <<"( "; break;
-        case LEX_BRCL : s <<") "; break;
-        case LEX_SQBROP : s <<"[ "; break;
-        case LEX_SQBRCL : s <<"] "; break;
-        case LEX_ID : s <<"ID "; break;
-        case LEX_END : s <<"; "; break;
-        case LEX_SEMIEND : s <<"slash n "; break;
-        case LEX_FIGOP : s << "{ "; break;
-        case LEX_FIGCL : s << "} "; break;
-        case POLIZ_LABEL : s << l.v_lex.get_offset() << " "; break;
-        case POLIZ_FGO : s << "!F "; break;
-        case POLIZ_GO : s << "! "; break;
-        case LEX_CONST : s << "C "; break;
-        case LEX_UNMIN : s << "~ "; break;
-        case LEX_UNPL : s << "@ "; break;
-        case LEX_MODE : s << "mode "; break;
-        default : s << " WOOOOW " ; break;
-        }
-    return s;
-    }
-};
-
-
-
-class Scanner
-{
-    enum state { H, IDENT, NUMB, ALE, DELIM, QUOTES, SLEEP};
-    static const std::string TW[];
-    static type_of_lex words[];
-    static const std::string TD[];
-    static type_of_lex dlms[];
-    std::string current_string;
-    std::string::iterator position;
-    int expnum;
-    state CS;
-    //int fp;
-    char c;
-    std::string buf;
-    bool exp(){return expnum == 0;}
-    void clear_string()
-    {
-        current_string.clear();
-        position = current_string.end();
-    }
-    void add ()
-    {
-        buf += c;
-    }
-    void add (char cc)
-    {
-        buf += cc;
-    }
-
-    int look ( const std::string &buf,const std::string *list )
-    {
-        int i = 1;
-        while ( !(list[i].empty()) )
-        {
-            if ( !buf.compare(list[i]) )
-                return i;
-            ++i;
-        }
-        return 0;
-    }
-    void gc (bool p = false)
-    {
-        if (position == current_string.end())
-        {
-            if (!p)
-                std::cout << "> ";
-            else
-                std::cout << "+ ";
-            if (std::getline(std::cin, current_string));
-            if (std::cin.eof()) exit(0);
-            current_string += '\n';
-            position = current_string.begin();
-        }
-        c = *(position++);
-    }
-public:
-    Lex get_lex (bool p = false);
-    void not_end_exp(){expnum++;}
-    void end_exp(){
-        expnum--;
-        if (expnum < 0) throw "strange error";
-        }
-    Scanner ( const char * program = NULL )
-    {
-        CS = H;
-        clear_string();
-        buf.clear();
-        expnum = 0;
-        gc();
-    }
-};
-
-const std::string Scanner::TW[] =
-{
-    "",
-    "TRUE", "FALSE",
-    "NULL", "repeart", "if", "break",
-    "c", "length", "mode", "matrix"
-    ,""
-};
-const std::string Scanner:: TD[] =
-{
-    "",
-    "<-",
-    "&", "|", "!",
-    ">", "<", ">=", "<=", "==", "!=",
-    "+", "-", "*", "/",
-    ":",
-    "(", ")", "[", "]",
-    ";", "\n", "," , "=", "{", "}", ""
-};
-
-type_of_lex Scanner::words[] =
-{
-    LEX_NULL,
-    LEX_CONST, LEX_CONST,
-    LEX_CONST, LEX_REPEART, LEX_IF, LEX_BREAK,
-    LEX_C, LEX_LEN, LEX_MODE, LEX_MATRIX,
-    LEX_NULL
-};
-
-type_of_lex Scanner::dlms[] =
-{
-    LEX_NULL,
-    LEX_IN,
-    LEX_AND, LEX_OR, LEX_NOT,
-    LEX_BIGGER, LEX_LES, LEX_BEQ, LEX_LEQ, LEX_EQ, LEX_NEQ,
-    LEX_PLUS, LEX_MINUS, LEX_MUL, LEX_DIV,
-    LEX_INTERVAL,
-    LEX_BROP, LEX_BRCL, LEX_SQBROP, LEX_SQBRCL, LEX_END, LEX_SEMIEND,
-    LEX_COMMA, LEX_IS, LEX_FIGOP, LEX_FIGCL,
-    LEX_NULL
-};
+    c = *(position++);
+}
+void Scanner::end_exp(){
+    expnum--;
+    if (expnum < 0) throw "strange error";
+}
 
 Lex Scanner::get_lex (bool p)
 {
@@ -397,5 +250,46 @@ Lex Scanner::get_lex (bool p)
     while ( true );
 }
 
+const std::string Scanner::TW[] =
+{
+    "",
+    "TRUE", "FALSE",
+    "NULL", "repeart", "if", "break",
+    "c", "length", "mode", "matrix"
+    ,""
+};
 
-#endif
+const std::string Scanner::TD[] =
+{
+    "",
+    "<-",
+    "&", "|", "!",
+    ">", "<", ">=", "<=", "==", "!=",
+    "+", "-", "*", "/",
+    ":",
+    "(", ")", "[", "]",
+    ";", "\n", "," , "=", "{", "}", ""
+};
+
+const type_of_lex Scanner::words[] =
+{
+    LEX_NULL,
+    LEX_CONST, LEX_CONST,
+    LEX_CONST, LEX_REPEART, LEX_IF, LEX_BREAK,
+    LEX_C, LEX_LEN, LEX_MODE, LEX_MATRIX,
+    LEX_NULL
+};
+
+const type_of_lex Scanner::dlms[] =
+{
+    LEX_NULL,
+    LEX_IN,
+    LEX_AND, LEX_OR, LEX_NOT,
+    LEX_BIGGER, LEX_LES, LEX_BEQ, LEX_LEQ, LEX_EQ, LEX_NEQ,
+    LEX_PLUS, LEX_MINUS, LEX_MUL, LEX_DIV,
+    LEX_INTERVAL,
+    LEX_BROP, LEX_BRCL, LEX_SQBROP, LEX_SQBRCL, LEX_END, LEX_SEMIEND,
+    LEX_COMMA, LEX_IS, LEX_FIGOP, LEX_FIGCL,
+    LEX_NULL
+};
+

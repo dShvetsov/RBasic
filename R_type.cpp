@@ -1,18 +1,17 @@
-#ifndef R_type__cpp
-#define R_type__cpp
+#include "R_type.h"
 
-#define EPS 0.000000001
-/*
 #include <iostream>
 #include <cstdio>
 #include <vector>
 #include <iterator>
 #include <cstdlib>
 #include <typeinfo>
-#include "LA.cpp"
-#include "variable_table.cpp"
-*/
 
+#include "LA.h"
+#include "variable_table.h"
+
+
+#define EPS 0.000000001
 int at(std::set<int> &a) {
     return TTV.put(Nulltype, true);
 }
@@ -89,8 +88,3 @@ int Leq(R_type *a, R_type *b)
     return (a->ToNum())->Leq(b);
 }
 
-
-
-
-
-#endif

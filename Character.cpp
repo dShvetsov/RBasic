@@ -1,3 +1,6 @@
+#include "Character.h"
+
+#include "variable_table.h"
 
 int Character_t::Eq(R_type *el)
 {
