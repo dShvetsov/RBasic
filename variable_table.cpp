@@ -4,6 +4,9 @@
 
 #include "R_type.h"
 #include "LA.h"
+#include "Logical.h"
+#include "Numeric.h"
+#include "Character.h"
 
 int tabl_ident::put ( const std::string &buf )
 {
