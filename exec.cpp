@@ -7,6 +7,9 @@
 #include "Numeric.h"
 #include "Logical.h"
 #include "Character.h"
+#include "func.h"
+#include "LA.h"
+#include "Poliz.h"
 
 R_type* change_type(R_type *a, kind_of_type t)
 {

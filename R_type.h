@@ -94,4 +94,10 @@ public:
     virtual ~R_type(){}
 };
 
+int Eq(R_type *a, R_type *b);
+int Neq(R_type *a, R_type *b);
+int Bigger(R_type *a, R_type *b);
+int Beq(R_type *a, R_type *b);
+int Less(R_type *a, R_type *b);
+int Leq(R_type *a, R_type *b);
 #endif
