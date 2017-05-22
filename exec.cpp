@@ -1,16 +1,7 @@
-#ifndef exec__cpp
-#define exec__cpp
-/*
+#include "exec.h"
+
 #include <stack>
 #include <iostream>
-*/
-
-class Executer
-{
-    Lex pc_el;
-public:
-    void execute(Poliz &prog);
-};
 
 void Executer::execute (Poliz &prog)
 {
@@ -320,5 +311,3 @@ void Executer::execute (Poliz &prog)
         std::cout  << std::endl;
     } */
 }
-
-#endif
