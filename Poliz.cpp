@@ -30,7 +30,7 @@ Lex& Poliz::operator[] (int index)
         return p[index];
 }
 
-friend std::ostream & operator << (std::ostream& os, Poliz &prog)
+std::ostream & operator << (std::ostream& os, Poliz &prog)
 {
     for (std::vector<Lex>::iterator i = prog.p.begin(); i != prog.p.end(); i++)
     {

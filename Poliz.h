@@ -6,7 +6,6 @@
 
 #include "LA.h"
 #include "R_type.h"
-#include "SA.h"
 #include "variable_table.h"
 
 class Poliz
