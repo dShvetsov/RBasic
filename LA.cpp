@@ -8,8 +8,8 @@
 #include <vector>
 #include <iterator>
 
-#include "variable_table.cpp"
-#include "R_type.cpp"
+#include "variable_table.h"
+#include "R_type.h"
 
 std::ostream& operator << ( std::ostream &s, Lex l )
 {
@@ -65,7 +65,7 @@ int Scanner::look(const std::string &buf,const std::string *list)
     return 0;
 }
 
-void Scanner::gc(bool p = false)
+void Scanner::gc(bool p)
 {
     if (position == current_string.end())
     {
@@ -250,5 +250,3 @@ Lex Scanner::get_lex (bool p)
     while ( true );
 }
 
-
-#endif

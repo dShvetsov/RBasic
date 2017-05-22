@@ -3,6 +3,26 @@
 #include <stack>
 #include <iostream>
 
+#include "R_type.h"
+#include "Numeric.h"
+#include "Logical.h"
+#include "Character.h"
+
+R_type* change_type(R_type *a, kind_of_type t)
+{
+    delete a;
+    R_type *ans;
+    switch(t)
+    {
+    case Nulltype: ans = new R_type; break;
+    case Numeric: ans = new Numeric_t; break;
+    case Logical: ans = new Logical_t; break;
+    case Character: ans = new Character_t; break;
+    }
+    return ans;
+}
+
+
 void Executer::execute (Poliz &prog)
 {
     std::stack<addr> args;

@@ -5,6 +5,7 @@
 #include <vector>
 #include <iterator>
 #include <typeinfo>
+#include <set>
 
 #include "LA.h"
 #include "variable_table.h"
@@ -95,24 +96,5 @@ public:
     virtual void write(){std::cout << "NULL" << std::endl;}
     virtual ~R_type(){}
 };
-
-//forward declaration of types
-class Numeric_t;
-class Logical_t;
-class Character_t;
-
-R_type* change_type(R_type *a, kind_of_type t)
-{
-    delete a;
-    R_type *ans;
-    switch(t)
-    {
-    case Nulltype: ans = new R_type; break;
-    case Numeric: ans = new Numeric_t; break;
-    case Logical: ans = new Logical_t; break;
-    case Character: ans = new Character_t; break;
-    }
-    return ans;
-}
 
 #endif
